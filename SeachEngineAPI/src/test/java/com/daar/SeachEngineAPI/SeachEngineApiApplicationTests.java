@@ -1,14 +1,15 @@
 package com.daar.SeachEngineAPI;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@EnableAutoConfiguration(exclude=SecurityAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
 class SeachEngineApiApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    }
 }
