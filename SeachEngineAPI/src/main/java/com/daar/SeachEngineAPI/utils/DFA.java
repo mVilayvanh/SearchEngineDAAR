@@ -1,4 +1,4 @@
-package daar.projet1;
+package com.daar.SeachEngineAPI.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

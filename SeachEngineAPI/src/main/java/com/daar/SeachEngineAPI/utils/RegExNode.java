@@ -1,4 +1,4 @@
-package daar.projet1;
+package com.daar.SeachEngineAPI.utils;
 
 public abstract class RegExNode {
     public abstract String toRegEx();
