@@ -2,7 +2,7 @@ import Button from './Button';
 import React, { useState } from "react";
 import REACT_APP_SERVER_API_URL from '../.env';
 
-const apiUrl = "http://localhost:8080";;
+const apiUrl = "http://localhost:8080";
 function SearchBar() {
     const [text, setText] = useState("");
 
@@ -23,12 +23,14 @@ function SearchBar() {
     };
     return (
         <div className="SearchBar">
-            <input 
-                type="text" 
-                placeholder="Search..." 
-                value={text}
-                onChange={(e) => setText(e.target.value)}/>
-            <Button onClick={handleSubmit} label="Search"/>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="text" 
+                    placeholder="Search..." 
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}/>
+                <Button onClick={handleSubmit} label="Search"/>
+            </form>
         </div>
     );
 }
