@@ -1,26 +1,18 @@
 import Button from './Button';
 import React, { useState } from "react";
-import REACT_APP_SERVER_API_URL from '../.env';
+import "./SearchBar.css";
 
 const apiUrl = "http://localhost:8080";;
-function SearchBar() {
+function SearchBar({onSearch}) {
     const [text, setText] = useState("");
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const res = await fetch(`${apiUrl}/api/books?query="` + text + '"', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include'
-        });
-        if (res.ok) {
-            const data = await res.json();
-            console.log(JSON.stringify(data, null, 2));
-        }
+        if (!text) return;
+        onSearch(text); // <-- on envoie le texte à App
         setText("");
     };
+    
     return (
         <div className="SearchBar">
             <input 

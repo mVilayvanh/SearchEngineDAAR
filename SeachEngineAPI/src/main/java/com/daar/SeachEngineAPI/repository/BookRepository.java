@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(value = "SELECT * FROM books WHERE tsv @@ plainto_tsquery('english', :query)", nativeQuery = true)
