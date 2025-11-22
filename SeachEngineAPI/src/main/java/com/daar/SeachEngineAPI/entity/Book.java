@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +31,21 @@ public class Book {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "tsv", nullable = false, columnDefinition = "TEXT")
+    private String tsv;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Set<String> getKeywords() {
+        Set<String> keywords = new HashSet<>();
+        if (tsv != null && !tsv.isEmpty()) {
+            String[] words = tsv.split("\t");
+            for (String word : words) {
+                keywords.add(word);
+            }
+        }
+        return keywords;
+    }
 
 }
