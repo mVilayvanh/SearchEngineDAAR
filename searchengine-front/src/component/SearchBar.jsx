@@ -1,13 +1,14 @@
 import Button from './Button';
-import React, { useState } from "react";
-import REACT_APP_SERVER_API_URL from '../.env';
+import { useState } from "react";
 
-const apiUrl = "http://localhost:8080";
-function SearchBar() {
+const apiUrl = process.env.REACT_APP_SERVER_API_URL;
+
+function SearchBar({setBooks}) {
     const [text, setText] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setBooks([]);
         const res = await fetch(`${apiUrl}/api/books?query="` + text + '"', {
             method: 'GET',
             headers: {
@@ -18,6 +19,7 @@ function SearchBar() {
         if (res.ok) {
             const data = await res.json();
             console.log(JSON.stringify(data, null, 2));
+            setBooks(data);
         }
         setText("");
     };
