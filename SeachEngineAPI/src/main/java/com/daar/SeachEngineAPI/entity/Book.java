@@ -26,4 +26,23 @@ public class Book {
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @Column(name = "tsv", nullable = false)
+    private String tsv;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTsv() {
+        return tsv;
+    }
+
+    public void setTsv(String tsv) {
+        this.tsv = tsv;
+    }
 }

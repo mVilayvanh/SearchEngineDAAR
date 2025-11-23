@@ -10,6 +10,7 @@ import java.util.List;
 public class BasicSearchService {
     private final BookRepository bookRepository;
 
+
     public BasicSearchService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }

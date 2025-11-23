@@ -12,4 +12,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "SELECT * FROM books WHERE tsv @@ plainto_tsquery('english', :query)", nativeQuery = true)
     List<Book> searchByFullText(@Param("query") String query);
 
+    @Query(value = "SELECT * FROM books", nativeQuery = true)
+    List<Book> findAllBooks();
 }
