@@ -1,6 +1,7 @@
 package com.daar.SeachEngineAPI.controllers;
 
 import com.daar.SeachEngineAPI.entity.Book;
+import com.daar.SeachEngineAPI.service.AdvancedSearchService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,15 +12,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/advanced-search")
 public class AdvancedSearchController {
-    private final AdvancedSearchController advancedSearchController;
+    private final AdvancedSearchService advancedSearchService;
 
-    public AdvancedSearchController(AdvancedSearchController advancedSearchController) {
-        this.advancedSearchController = advancedSearchController;
+    public AdvancedSearchController(AdvancedSearchService advancedSearchService) {
+        this.advancedSearchService = advancedSearchService;
     }
 
     @GetMapping
-    public List<Book> search(@RequestParam String query) {
-        return advancedSearchController.search(query);
+    public List<Book> search(@RequestParam("query") String query){
+        return advancedSearchService.searchBooks(query);
     }
-
 }

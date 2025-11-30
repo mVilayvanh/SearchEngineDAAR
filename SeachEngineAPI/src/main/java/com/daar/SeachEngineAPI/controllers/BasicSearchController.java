@@ -16,7 +16,7 @@ public class BasicSearchController {
     }
 
     @GetMapping
-    public List<Book> search(@RequestParam String query) {
+    public List<Book> search(@RequestParam("query") String query) {
         return this.bss.searchBook(query);
     }
 }

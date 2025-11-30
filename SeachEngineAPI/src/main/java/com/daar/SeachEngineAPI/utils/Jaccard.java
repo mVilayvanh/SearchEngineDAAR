@@ -14,6 +14,6 @@ public class Jaccard {
         Set<String> union = new HashSet<>(a);
         union.addAll(b);
         // We may delete 1.0 - if ranking is not working correctly
-        return union.isEmpty() ? 0 : 1.0 - ((double) inter.size() / union.size());
+        return union.isEmpty() ? 0 : (double) inter.size() / union.size();
     }
 }
