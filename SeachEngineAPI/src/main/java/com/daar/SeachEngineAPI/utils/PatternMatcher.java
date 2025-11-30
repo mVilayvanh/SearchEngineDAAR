@@ -19,9 +19,15 @@ public class PatternMatcher {
     }
 
     public boolean matches(String text) {
+        automaton.reset();
         for (char c : text.toCharArray()) {
             automaton.readCharacter(c);
         }
         return automaton.isAccepted();
+    }
+
+    @Override
+    public String toString() {
+        return automaton.toString();
     }
 }

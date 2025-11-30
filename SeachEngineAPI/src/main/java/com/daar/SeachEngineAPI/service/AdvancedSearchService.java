@@ -2,32 +2,33 @@ package com.daar.SeachEngineAPI.service;
 
 import com.daar.SeachEngineAPI.entity.Book;
 import com.daar.SeachEngineAPI.repository.BookRepository;
+import com.daar.SeachEngineAPI.repository.KeywordBooks;
 import com.daar.SeachEngineAPI.utils.PatternMatcher;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class AdvancedSearchService {
-    private final PreprocessingService preprocessingService;
+    private final BookRepository bookRepository;
     private final RankingService rankingService;
 
-    public AdvancedSearchService(PreprocessingService preprocessingService, RankingService rankingService) {
-        this.preprocessingService = preprocessingService;
+    public AdvancedSearchService(BookRepository bookRepository, RankingService rankingService) {
+        this.bookRepository = bookRepository;
         this.rankingService = rankingService;
+        rankingService.init();
     }
 
     public List<Book> searchBooks(String query) {
         PatternMatcher pm = new PatternMatcher(query);
-        Map<String, Set<Book>> index = preprocessingService.getKeywordsIndex();
-        List<Book> books = index.entrySet().stream()
-                .filter(entry -> pm.matches(entry.getKey()))
-                .flatMap(entry -> entry.getValue().stream())
+        List<KeywordBooks> index = bookRepository.findKeywordBooks();
+        List<Book> books = index.stream()
+                .filter(kb -> pm.matches(kb.getKeyword()))
+                .flatMap(kb -> Arrays.stream(kb.getBooks())
+                        .map(bookId -> bookRepository.findById(bookId).orElse(null))
+                        .filter(Objects::nonNull))
+                .distinct()
                 .toList();
-        return rankingService.ClosenessRanking(books);
+        return rankingService.closenessRanking(books);
     }
 }
