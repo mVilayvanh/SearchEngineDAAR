@@ -1,0 +1,29 @@
+.Books {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.Books table {
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 1000px;
+  table-layout: fixed;
+  text-align: left;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.Books th, .Books td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.Books th:nth-child(1), .Books td:nth-child(1) { width: 40%; }
+.Books th:nth-child(2), .Books td:nth-child(2) { width: 30%; }
+.Books th:nth-child(3), .Books td:nth-child(3) { width: 30%; }
