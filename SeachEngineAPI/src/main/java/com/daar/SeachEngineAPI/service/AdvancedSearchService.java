@@ -16,11 +16,17 @@ public class AdvancedSearchService {
     public AdvancedSearchService(BookRepository bookRepository, RankingService rankingService) {
         this.bookRepository = bookRepository;
         this.rankingService = rankingService;
-        rankingService.init();
     }
 
+    /**
+     * Permet de faire la recherche avancée. On crée un automate associé à la requête
+     * puis on fait matcher les mots de la table d'indexage avec l'automate.
+     * On ne garde que les livres qui ont matché.
+     * @param query
+     * @return
+     */
     public List<Book> searchBooks(String query) {
-        PatternMatcher pm = new PatternMatcher(query);
+        PatternMatcher pm = new PatternMatcher(query.toLowerCase());
         List<KeywordBooks> index = bookRepository.findKeywordBooks();
         List<Book> books = index.stream()
                 .filter(kb -> pm.matches(kb.getKeyword()))

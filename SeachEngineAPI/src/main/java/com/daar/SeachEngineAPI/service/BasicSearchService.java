@@ -15,7 +15,6 @@ public class BasicSearchService {
     public BasicSearchService(BookRepository bookRepository, RankingService rankingService) {
         this.bookRepository = bookRepository;
         this.rankingService = rankingService;
-        rankingService.init();
     }
 
     public List<Book> searchBook(String query) {

@@ -16,7 +16,7 @@ public class GeometricGraph {
             for (Long bookId2 : bookLexicon.getAllBookIds()) {
                 if (bookId1.equals(bookId2)) continue;
                 double dist = Jaccard.distance(bookLexicon.get(bookId1), bookLexicon.get(bookId2));
-                res.addEdge(bookId1, bookId2, dist == 0.0 ? 0 : 1.0 / dist);
+                if (dist > 0.8) res.addEdge(bookId1, bookId2, 1.0 / dist);
             }
         }
         return res;
@@ -45,6 +45,7 @@ public class GeometricGraph {
         dist.put(start, 0.0);
         PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Map.Entry.comparingByValue());
         pq.add(Map.entry(start, 0.0));
+        // Il faut effectuer un parcours en largeur pour estimer la distance
         while (!pq.isEmpty()) {
             Long u = pq.poll().getKey();
             double d = dist.get(u);

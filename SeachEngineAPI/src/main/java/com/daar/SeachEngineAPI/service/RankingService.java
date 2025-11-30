@@ -5,6 +5,7 @@ import com.daar.SeachEngineAPI.repository.BookRepository;
 import com.daar.SeachEngineAPI.repository.KeywordBooks;
 import com.daar.SeachEngineAPI.utils.BookLexicon;
 import com.daar.SeachEngineAPI.utils.GeometricGraph;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,15 @@ public class RankingService {
         this.bookRepository = bookRepository;
     }
 
+    @PostConstruct
     public void init() {
         if (isInitialized) return;
+        logger.info("ranking service initializing...");
         buildLexicon();
+        logger.info("graph initializing...");
         GeometricGraph graph = GeometricGraph.jaccardDistanceFrom(bookLexicon);
+        logger.info("graph initialized");
+        logger.info("closeness scoring...");
         closenessScores = graph.computeClosenessCentrality();
         logger.info("score established");
         isInitialized = true;
