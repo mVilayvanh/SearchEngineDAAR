@@ -1,56 +1,25 @@
 package com.daar.SeachEngineAPI.service;
 
 import com.daar.SeachEngineAPI.entity.Book;
-import com.daar.SeachEngineAPI.repository.BookRepository;
-import com.daar.SeachEngineAPI.utils.BookLexicon;
-import com.daar.SeachEngineAPI.utils.GeometricGraph;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 @Service
 public class RankingService {
-    private final BookRepository bookRepository;
-    private final Map<String, Set<Long>> keywordsIndex = new HashMap<>();
-    private final BookLexicon bookLexicon = new BookLexicon();
-    private Map<Long, Double> closenessScores = new HashMap<>();
 
-    private static final Pattern PATTERN = Pattern.compile("'(\\w+)':\\d+");
+    private final PreprocessingService preprocessingService;
 
-    public RankingService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public RankingService(PreprocessingService preprocessingService) {
+        this.preprocessingService = preprocessingService;
     }
 
-    @PostConstruct
-    public void init() {
-        buildLexicon();
-        GeometricGraph graph = GeometricGraph.jaccardDistanceFrom(bookLexicon);
-        closenessScores = graph.computeClosenessCentrality();
-    }
-
-    private void buildLexicon() {
-        keywordsIndex.clear();
-
-        List<Book> bookList = bookRepository.findAllBooks();
-
-        for (Book book : bookList) {
-            Long id = book.getId();
-            String tsv = book.getTsv();
-            Matcher matcher = PATTERN.matcher(tsv);
-
-            while (matcher.find()) {
-                String lexeme = matcher.group(1);
-
-                keywordsIndex.computeIfAbsent(lexeme, k -> new HashSet<>()).add(id);
-                bookLexicon.put(id, lexeme);
-            }
-        }
-    }
-
-    public double getCloseness(Long bookId) {
-        return closenessScores.getOrDefault(bookId, 0.0);
+    public List<Book> ClosenessRanking(List<Book> books) {
+        return books.stream()
+                .sorted((a, b) -> Double.compare(
+                        preprocessingService.getCloseness(b.getId()),
+                        preprocessingService.getCloseness(a.getId())
+                ))
+                .toList();
     }
 }
